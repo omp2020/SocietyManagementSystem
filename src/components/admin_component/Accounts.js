@@ -19,11 +19,18 @@ const Accounts = () => {
     },
   ])
 
-  const [modal, setModal] = useState({ Edit: false, Delete: false })
+  const [modal, setModal] = useState(false)
+  const [NewData, setNewData] = useState({
+    TransId: "",
+    DateTime: "",
+    Mode: "",
+    Amount: "",
+    Remark: "",
+  })
 
-  const handleEdit = (id) => {
-    console.log(id)
-    setModal({ Edit: true, Delete: false })
+  const handleNew = () => {
+    setModal(true)
+    console.log("Handle New Clicked")
   }
 
   return (
@@ -33,12 +40,13 @@ const Accounts = () => {
         <div className="row col-md-1 offset-md-10">
           <button
             className="m-2 btn btn-primary"
-            onClick={() => {
-              console.log("Add New Clicked")
-            }}
+            data-toggle="modal"
+            data-target="#Account_New"
+            onClick={() => handleNew()}
           >
             + Add New
           </button>
+          {modal ? <Modal data={NewData} type="addnew" from="Account" /> : ""}
         </div>
         <div className="members">
           <table id="members" className="table">
@@ -54,7 +62,7 @@ const Accounts = () => {
             </thead>
             <tbody>
               {tdata.map((t) => (
-                <TableData key={t.name} mem={t} handleEdit={handleEdit} />
+                <TableData key={t.TransId} mem={t} />
               ))}
             </tbody>
           </table>

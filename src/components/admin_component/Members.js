@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Component } from "react"
+import React, { useState, Component } from "react"
 import "../../css/members.css"
 import Modal from "./Modal"
 
@@ -22,7 +22,7 @@ const Members = () => {
     },
   ])
 
-  const [Modal, setModal] = useState({ New: false })
+  const [modal, setModal] = useState(false)
   const [NewData, setNewData] = useState({
     memberID: "",
     flat: "",
@@ -33,7 +33,7 @@ const Members = () => {
   })
 
   const handleNew = () => {
-    setModal({ New: true })
+    setModal(true)
     console.log("Handle New Clicked")
   }
 
@@ -46,17 +46,11 @@ const Members = () => {
             className="m-2 btn btn-primary"
             data-toggle="modal"
             data-target="#Members_New"
-            onClick={() => {
-              handleNew()
-            }}
+            onClick={() => handleNew()}
           >
             + Add New
           </button>
-          {Modal.New ? (
-            <Modal data={NewData} type="addnew" from="members" />
-          ) : (
-            ""
-          )}
+          {modal ? <Modal data={NewData} type="addnew" from="members" /> : ""}
         </div>
         <div className="members">
           <table id="members" className="table">

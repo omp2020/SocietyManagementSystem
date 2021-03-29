@@ -28,8 +28,11 @@ const Login = () => {
     }
   }
 
+  const [isLogin, setLogin] = useState(false)
+
   const makeLogin = () => {
     console.log("Login Clicked")
+    setLogin(true)
   }
 
   return (
@@ -74,6 +77,7 @@ const Login = () => {
                 <button className="btn btn-primary" onClick={() => makeLogin()}>
                   Login
                 </button>
+                {isLogin ? <Redirect to="/admin" /> : ""}
               </div>
             </div>
           </div>
