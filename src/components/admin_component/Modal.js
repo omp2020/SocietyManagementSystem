@@ -95,6 +95,24 @@ const Modal = ({ data, type, from }) => {
       }
     }
   }
+
+  const handleClose = (f) => {
+    if (f === "members") {
+      setData({
+        memberID: "",
+        flat: "",
+        owner: "",
+        contact: "",
+        parking: "",
+        status: "",
+      })
+    } else if (f === "Services") {
+      setData({ name: "", contact: "", designation: "" })
+    } else if (f === "Account") {
+      setData({ TransId: "", DateTime: "", Mode: "", Amount: "", Remark: "" })
+    }
+  }
+
   return (
     <>
       {type === "addnew" ? (
@@ -118,6 +136,7 @@ const Modal = ({ data, type, from }) => {
                     class="close"
                     data-dismiss="modal"
                     aria-label="Close"
+                    onClick={() => handleClose(from)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -231,6 +250,7 @@ const Modal = ({ data, type, from }) => {
                     class="close"
                     data-dismiss="modal"
                     aria-label="Close"
+                    onClick={() => handleClose(from)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -342,6 +362,7 @@ const Modal = ({ data, type, from }) => {
                     class="close"
                     data-dismiss="modal"
                     aria-label="Close"
+                    onClick={() => handleClose(from)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -427,6 +448,7 @@ const Modal = ({ data, type, from }) => {
                     class="close"
                     data-dismiss="modal"
                     aria-label="Close"
+                    onClick={() => handleClose(from)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -536,6 +558,7 @@ const Modal = ({ data, type, from }) => {
                     class="close"
                     data-dismiss="modal"
                     aria-label="Close"
+                    onClick={() => handleClose(from)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -578,6 +601,7 @@ const Modal = ({ data, type, from }) => {
                   class="close"
                   data-dismiss="modal"
                   aria-label="Close"
+                  onClick={() => handleClose(from)}
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -665,6 +689,7 @@ const Modal = ({ data, type, from }) => {
                   class="close"
                   data-dismiss="modal"
                   aria-label="Close"
+                  onClick={() => handleClose(from)}
                 >
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -715,6 +740,7 @@ const Modal = ({ data, type, from }) => {
                     class="close"
                     data-dismiss="modal"
                     aria-label="Close"
+                    onClick={() => handleClose(from)}
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
