@@ -11,14 +11,14 @@ const Navbar = () => {
 
   return (
     <>
-      <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+      <nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">
           Society Management System
         </a>
         <div class="btn-group">
           <button
             type="button"
-            class="btn btn-secondary dropdown-toggle"
+            class="btn btn-primary dropdown-toggle"
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
