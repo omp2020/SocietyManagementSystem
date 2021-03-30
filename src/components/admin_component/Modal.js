@@ -1,4 +1,6 @@
 import React, { useState } from "react"
+import Axios from "axios"
+import links from "../../links.json"
 
 const Modal = ({ data, type, from }) => {
   let [d, setData] = useState(data)
@@ -110,6 +112,21 @@ const Modal = ({ data, type, from }) => {
       setData({ name: "", contact: "", designation: "" })
     } else if (f === "Account") {
       setData({ TransId: "", DateTime: "", Mode: "", Amount: "", Remark: "" })
+    }
+  }
+
+  const handleSave = (f, t) => {
+    if (f === "Services" && t === "edit") {
+      console.log(d)
+      Axios.post(links.home + links.services, d, {
+        headers: {
+          Authorization: `token ${links.token}`,
+        },
+      })
+        .then((res) => {
+          console.log("Success")
+        })
+        .catch((err) => console.log("Error", err))
     }
   }
 
@@ -662,7 +679,11 @@ const Modal = ({ data, type, from }) => {
                 >
                   Close
                 </button>
-                <button type="button" class="btn btn-primary">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onClick={() => handleSave(from, type)}
+                >
                   Save changes
                 </button>
               </div>

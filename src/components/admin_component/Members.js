@@ -3,40 +3,25 @@ import "../../css/members.css"
 import Modal from "./Modal"
 import Axios from "axios"
 import links from "../../links.json"
+import ReactLoading from "react-loading"
 
 const Members = () => {
+  const [loader, setLoader] = useState(true)
   useEffect(() => {
-    Axios.get(links.home + links.members, { params: { society_id: 1 } })
-      .then((res) => console.log(res))
+    Axios.get(links.home + links.members, {
+      params: { society_id: 1 },
+      headers: {
+        Authorization: `token ${links.token}`,
+      },
+    })
+      .then((res) => {
+        setTdata(res.data)
+        setLoader(false)
+        localStorage.setItem("society_id", 1)
+      })
       .catch((err) => console.log("Error", err))
-    // Axios({
-    //   method: "get",
-    //   headers: { "Content-Type": "application/json" },
-    //   url: links.home + links.members,
-    // })
-    //   .then(function (response) {
-    //     console.log(response)
-    //   })
-    //   .catch((err) => console.log(err))
   }, [])
-  const [tdata, setTdata] = useState([
-    {
-      memberID: "1122",
-      flat: "105",
-      owner: "Om",
-      contact: "9876354238",
-      parking: "2W-1,4W-0",
-      status: "Rented",
-    },
-    {
-      memberID: "1126",
-      flat: "106",
-      owner: "JD",
-      contact: "9876321338",
-      parking: "2W-0,4W-1",
-      status: "Self",
-    },
-  ])
+  const [tdata, setTdata] = useState([])
 
   const [modal, setModal] = useState(false)
   const [NewData, setNewData] = useState({
@@ -57,6 +42,13 @@ const Members = () => {
     <>
       <div className="container">
         <div className="h1 p-4">Members</div>
+        <div className="d-flex justify-content-center">
+          {loader ? (
+            <ReactLoading type="bars" color="black" height={55} width={90} />
+          ) : (
+            ""
+          )}
+        </div>
         <div className="row col-md-1 offset-md-10">
           <button
             className="m-2 btn btn-primary"
@@ -96,8 +88,8 @@ const Members = () => {
 class TableData extends Component {
   state = {
     data: {
-      id: this.props.mem.memberID,
-      flat: this.props.mem.flat,
+      id: this.props.mem.id,
+      flat: this.props.mem.wing + this.props.mem.flat_no,
       own: this.props.mem.owner,
       cont: this.props.mem.contact,
       park: this.props.mem.parking,
@@ -128,7 +120,7 @@ class TableData extends Component {
           <td>{this.state.data.own}</td>
           <td>{this.state.data.cont}</td>
           <td>{this.state.data.park}</td>
-          <td>{this.state.data.stat}</td>
+          <td>{this.state.data.stat ? "Rented" : "Self"}</td>
           <td>
             <button
               type="button"

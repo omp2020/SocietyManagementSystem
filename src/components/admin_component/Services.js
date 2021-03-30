@@ -1,19 +1,25 @@
-import React, { useState, Component } from "react"
+import React, { useState, useEffect, Component } from "react"
 import Modal from "./Modal"
+import Axios from "axios"
+import links from "../../links.json"
+import ReactLoading from "react-loading"
 
 const Services = () => {
-  const [tdata, setTdata] = useState([
-    {
-      name: "Om",
-      contact: "9876354238",
-      designation: "Secretary",
-    },
-    {
-      name: "JD",
-      contact: "9873498238",
-      designation: "Temp",
-    },
-  ])
+  const [loader, setLoader] = useState(true)
+  const [tdata, setTdata] = useState([])
+  useEffect(() => {
+    Axios.get(links.home + links.services, {
+      params: { society_id: 1 },
+      headers: {
+        Authorization: `token ${links.token}`,
+      },
+    })
+      .then((res) => {
+        setTdata(res.data)
+        setLoader(false)
+      })
+      .catch((err) => console.log("Error", err))
+  }, [])
 
   const [modal, setModal] = useState(false)
   const [NewData, setNewData] = useState({
@@ -30,6 +36,13 @@ const Services = () => {
     <>
       <div className="container">
         <div className="h1 p-4">Service</div>
+        <div className="d-flex justify-content-center">
+          {loader ? (
+            <ReactLoading type="bars" color="black" height={55} width={90} />
+          ) : (
+            ""
+          )}
+        </div>
         <div className="row col-md-1 offset-md-10">
           <button
             className="m-2 btn btn-primary"

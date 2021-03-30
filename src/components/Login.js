@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import axios from "axios"
 import Logo from "../img/Logo.png"
 import "../css/login.css"
@@ -14,8 +14,9 @@ import {
 const Login = () => {
   const [loginData, setLD] = useState({ username: "", password: "" })
 
-  const changeVal = (e, type, field) => {
+  const changeVal = (e, field) => {
     let val = e.target.value
+    console.log(field, val)
     switch (field) {
       case "username":
         setLD({ ...loginData, username: val })
@@ -30,9 +31,19 @@ const Login = () => {
 
   const [isLogin, setLogin] = useState(false)
 
+  const [doLogin, setDologin] = useState()
+  useEffect(() => {
+    // Update the document title using the browser API
+    setDologin(false)
+  })
+
   const makeLogin = () => {
     console.log("Login Clicked")
-    setLogin(true)
+    console.log(loginData)
+    if (loginData.username === "Om" && loginData.password === "Test123") {
+      setDologin(true)
+      setLogin(true)
+    }
   }
 
   return (
@@ -60,16 +71,14 @@ const Login = () => {
                     legend="Username"
                     itype="text"
                     type="login"
-                    value={loginData.username}
-                    onChange={changeVal}
+                    onChange={(e) => changeVal(e, "username")}
                     name="username"
                   />
                   <Field
                     legend="Password"
                     itype="password"
                     type="login"
-                    value={loginData.password}
-                    onChange={changeVal}
+                    onChange={(e) => changeVal(e, "password")}
                     name="password"
                   />
                 </div>

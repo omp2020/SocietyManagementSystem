@@ -1,24 +1,25 @@
-import React, { useState, Component } from "react"
+import React, { useState, useEffect, Component } from "react"
 import Modal from "./Modal"
+import Axios from "axios"
+import links from "../../links.json"
+import ReactLoading from "react-loading"
 
 const Accounts = () => {
-  const [tdata, setTdata] = useState([
-    {
-      TransId: "1204",
-      DateTime: "23-Nov-2020 13:00",
-      Mode: "Credit",
-      Amount: "Rs. 5000",
-      Remark: "Null",
-    },
-    {
-      TransId: "4854",
-      DateTime: "23-Nov-2020 13:45",
-      Mode: "Debit",
-      Amount: "Rs. 5050",
-      Remark: "Null",
-    },
-  ])
-
+  const [tdata, setTdata] = useState([])
+  const [loader, setLoader] = useState(true)
+  useEffect(() => {
+    Axios.get(links.home + links.accounts, {
+      params: { society_id: 1 },
+      headers: {
+        Authorization: `token ${links.token}`,
+      },
+    })
+      .then((res) => {
+        setTdata(res.data)
+        setLoader(false)
+      })
+      .catch((err) => console.log("Error", err))
+  }, [])
   const [modal, setModal] = useState(false)
   const [NewData, setNewData] = useState({
     TransId: "",
@@ -37,6 +38,13 @@ const Accounts = () => {
     <>
       <div className="container">
         <div className="h1 p-4">Accounts</div>
+        <div className="d-flex justify-content-center">
+          {loader ? (
+            <ReactLoading type="bars" color="black" height={55} width={90} />
+          ) : (
+            ""
+          )}
+        </div>
         <div className="row col-md-1 offset-md-10">
           <button
             className="m-2 btn btn-primary"
@@ -60,6 +68,7 @@ const Accounts = () => {
                 <th>Option</th>
               </tr>
             </thead>
+
             <tbody>
               {tdata.map((t) => (
                 <TableData key={t.TransId} mem={t} />
@@ -75,11 +84,11 @@ const Accounts = () => {
 class TableData extends Component {
   state = {
     data: {
-      TransId: this.props.mem.TransId,
-      DateTime: this.props.mem.DateTime,
-      Mode: this.props.mem.Mode,
-      Amount: this.props.mem.Amount,
-      Remark: this.props.mem.Remark,
+      TransId: this.props.mem.id,
+      DateTime: this.props.mem.date_time,
+      Mode: this.props.mem.mode,
+      Amount: this.props.mem.amount,
+      Remark: this.props.mem.remark,
     },
     modal: { Delete: false },
   }
@@ -94,8 +103,11 @@ class TableData extends Component {
       <>
         <tr>
           <td>{this.state.data.TransId}</td>
-          <td>{this.state.data.DateTime}</td>
-          <td>{this.state.data.Mode}</td>
+          <td>
+            {this.state.data.DateTime.split("T")[0]}{" "}
+            {this.state.data.DateTime.split("T")[1].slice(0, 8)}
+          </td>
+          <td>{this.state.data.Mode ? "Credit" : "Debit"}</td>
           <td>{this.state.data.Amount}</td>
           <td>{this.state.data.Remark}</td>
           <td>
