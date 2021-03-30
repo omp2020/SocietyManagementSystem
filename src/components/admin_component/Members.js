@@ -25,13 +25,77 @@ const Members = () => {
 
   const [modal, setModal] = useState(false)
   const [NewData, setNewData] = useState({
-    memberID: "",
-    flat: "",
+    society_id: 1,
+    wing: "",
+    flat_no: "",
     owner: "",
     contact: "",
     parking: "",
     status: "",
   })
+
+  const updateTdata = (id) => {
+    console.log("Id fromt data", id)
+    const data = tdata.filter((t) => t.id !== id)
+    setTdata(data)
+  }
+
+  const changeVal = (e, id, t, f) => {
+    let val = e.target.value
+    console.log(e)
+    if (t === "addnew" && f === "members") {
+      switch (id) {
+        case "Name":
+          setNewData({ ...NewData, owner: val })
+          break
+        case "Flat":
+          setNewData({ ...NewData, flat_no: val })
+          break
+        case "Contact":
+          setNewData({ ...NewData, contact: val })
+          break
+        case "Parking":
+          setNewData({ ...NewData, parking: val })
+          break
+        case "sel1":
+          val === "Rented" ? (val = 1) : (val = 0)
+          setNewData({ ...NewData, status: val })
+          break
+        case "Wing":
+          setNewData({ ...NewData, wing: val })
+        default:
+          break
+      }
+    }
+  }
+
+  const handleSave = (f, t) => {
+    if (f === "members" && t === "addnew") {
+      console.log("NewData", NewData)
+      Axios.post(links.home + links.members, NewData, {
+        headers: {
+          Authorization: `token ${links.token}`,
+        },
+      })
+        .then(() => {
+          console.log("Success")
+          Axios.get(links.home + links.members, {
+            params: { society_id: 1 },
+            headers: {
+              Authorization: `token ${links.token}`,
+            },
+          })
+            .then((res) => {
+              console.log(res.data)
+              setTdata(res.data)
+            })
+            .catch((err) => console.log("Error", err))
+        })
+        .catch((err) => {
+          console.log("Error", err)
+        })
+    }
+  }
 
   const handleNew = () => {
     setModal(true)
@@ -58,13 +122,24 @@ const Members = () => {
           >
             + Add New
           </button>
-          {modal ? <Modal data={NewData} type="addnew" from="members" /> : ""}
+          {modal ? (
+            <Modal
+              data={NewData}
+              type="addnew"
+              from="members"
+              changeVal={changeVal}
+              handleSave={handleSave}
+            />
+          ) : (
+            ""
+          )}
         </div>
         <div className="members">
           <table id="members" className="table">
             <thead className="thead-light">
               <tr>
                 <th>Member ID</th>
+                <th>Wing No.</th>
                 <th>Flat No.</th>
                 <th>Owner</th>
                 <th>Contact</th>
@@ -75,7 +150,7 @@ const Members = () => {
             </thead>
             <tbody>
               {tdata.map((t) => (
-                <TableData key={t.memberID} mem={t} />
+                <TableData key={t.memberID} mem={t} updateTdata={updateTdata} />
               ))}
             </tbody>
           </table>
@@ -85,81 +160,149 @@ const Members = () => {
   )
 }
 
-class TableData extends Component {
-  state = {
-    data: {
-      id: this.props.mem.id,
-      flat: this.props.mem.wing + this.props.mem.flat_no,
-      own: this.props.mem.owner,
-      cont: this.props.mem.contact,
-      park: this.props.mem.parking,
-      stat: this.props.mem.status,
-    },
-    modal: {
-      Edit: false,
-      Delete: false,
-    },
+const TableData = ({ mem, updateTdata }) => {
+  let [d, setData] = useState(mem)
+  const [modal, setModal] = useState({ Edit: false, Delete: false })
+
+  const handleEdit = () => {
+    console.log(d)
+    setModal({ Edit: true, Delete: false })
   }
 
-  handleEdit = () => {
-    console.log(this.state)
-    this.setState({ modal: { Edit: true, Delete: false } })
+  const handleDeletemodal = () => {
+    console.log("From Delete: ", d)
+    setModal({ Edit: false, Delete: true })
   }
 
-  handleDelete = () => {
-    console.log("From Delete: ", this.state)
-    this.setState({ modal: { Edit: false, Delete: true } })
+  const changeVal = (e, id, t, f) => {
+    let val = e.target.value
+    console.log(e)
+    if (t === "edit" && f === "members") {
+      switch (id) {
+        case "Name":
+          setData({ ...d, owner: val })
+          break
+        case "Flat":
+          setData({ ...d, flat_no: val })
+          break
+        case "Contact":
+          setData({ ...d, contact: val })
+          break
+        case "Parking":
+          setData({ ...d, parking: val })
+          break
+        case "sel1":
+          val === "Rented" ? (val = 1) : (val = 0)
+          setData({ ...d, status: val })
+          break
+        case "Wing":
+          setData({ ...d, wing: val })
+        default:
+          break
+      }
+    }
   }
 
-  render() {
-    return (
-      <>
-        <tr>
-          <td>{this.state.data.id}</td>
-          <td>{this.state.data.flat}</td>
-          <td>{this.state.data.own}</td>
-          <td>{this.state.data.cont}</td>
-          <td>{this.state.data.park}</td>
-          <td>{this.state.data.stat ? "Rented" : "Self"}</td>
-          <td>
-            <button
-              type="button"
-              class="btn btn-warning btn-sm"
-              data-toggle="modal"
-              data-target="#Edit"
-              onClick={() => {
-                this.handleEdit()
-              }}
-            >
-              Edit
-            </button>
-            <button
-              type="button"
-              class="btn btn-outline-danger btn-sm"
-              data-toggle="modal"
-              data-target="#Delete"
-              style={{ marginLeft: "5px" }}
-              onClick={() => {
-                this.handleDelete()
-              }}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-        {this.state.modal.Edit ? (
-          <Modal data={this.state.data} type="edit" from="members" />
-        ) : (
-          ""
-        )}
-        {this.state.modal.Delete ? (
-          <Modal data={this.state.data} type="delete" from="members" />
-        ) : (
-          ""
-        )}
-      </>
-    )
+  const handleSave = (f, t) => {
+    if (f === "members" && t === "edit") {
+      console.log(d)
+      Axios.put(links.home + links.members, d, {
+        params: { id: d.id },
+        headers: {
+          Authorization: `token ${links.token}`,
+        },
+      })
+        .then((res) => {
+          console.log("Success")
+        })
+        .catch((err) => {
+          console.log("Error", err)
+        })
+    }
   }
+
+  const handleDelete = (f, t) => {
+    if (f === "members" && t === "delete") {
+      console.log("ID:", d)
+      Axios.delete(links.home + links.members, {
+        params: { id: d.id },
+        headers: {
+          Authorization: `token ${links.token}`,
+        },
+      })
+        .then(() => {
+          console.log("Success")
+          setModal({ Edit: false, Delete: false })
+          updateTdata(d.id)
+        })
+        .catch((err) => {
+          console.log("Error", err)
+        })
+    }
+  }
+
+  return (
+    <>
+      <tr>
+        <td>{d.id}</td>
+        <td>{d.wing}</td>
+        <td>{d.flat_no}</td>
+        <td>{d.owner}</td>
+        <td>{d.contact}</td>
+        <td>{d.parking}</td>
+        <td>{d.status ? "Rented" : "Self"}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-warning btn-sm"
+            data-toggle="modal"
+            data-target="#Edit"
+            onClick={() => {
+              handleEdit()
+            }}
+          >
+            Edit
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm"
+            data-toggle="modal"
+            data-target="#Delete"
+            style={{ marginLeft: "5px" }}
+            onClick={() => {
+              handleDeletemodal()
+            }}
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      {modal.Edit ? (
+        <Modal
+          data={d}
+          type="edit"
+          from="members"
+          changeVal={changeVal}
+          handleSave={handleSave}
+          handleDelete={handleDelete}
+        />
+      ) : (
+        ""
+      )}
+      {modal.Delete ? (
+        <Modal
+          data={d}
+          type="delete"
+          from="members"
+          changeVal={changeVal}
+          handleSave={handleSave}
+          handleDelete={handleDelete}
+        />
+      ) : (
+        ""
+      )}
+    </>
+  )
 }
 
 export default Members

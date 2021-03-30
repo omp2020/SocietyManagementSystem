@@ -22,16 +22,67 @@ const Accounts = () => {
   }, [])
   const [modal, setModal] = useState(false)
   const [NewData, setNewData] = useState({
-    TransId: "",
-    DateTime: "",
-    Mode: "",
-    Amount: "",
-    Remark: "",
+    society_id: 1,
+    mode: "",
+    amount: "",
+    remark: "",
   })
 
   const handleNew = () => {
     setModal(true)
-    console.log("Handle New Clicked")
+  }
+
+  const updateTdata = (id) => {
+    console.log("Id fromt data", id)
+    const data = tdata.filter((t) => t.id !== id)
+    setTdata(data)
+  }
+
+  const changeVal = (e, id, t, f) => {
+    let val = e.target.value
+    if (t === "addnew" && f === "Account") {
+      switch (id) {
+        case "sel1":
+          val === "Credit" ? (val = 1) : (val = 0)
+          setNewData({ ...NewData, mode: val })
+          break
+        case "Amount":
+          setNewData({ ...NewData, amount: val })
+          break
+        case "Remark":
+          setNewData({ ...NewData, remark: val })
+          break
+        default:
+          break
+      }
+    }
+  }
+
+  const handleSave = (f, t) => {
+    if (f === "Account" && t === "addnew") {
+      Axios.post(links.home + links.accounts, NewData, {
+        headers: {
+          Authorization: `token ${links.token}`,
+        },
+      })
+        .then(() => {
+          console.log("Success")
+          Axios.get(links.home + links.accounts, {
+            params: { society_id: 1 },
+            headers: {
+              Authorization: `token ${links.token}`,
+            },
+          })
+            .then((res) => {
+              console.log(res.data)
+              setTdata(res.data)
+            })
+            .catch((err) => console.log("Error", err))
+        })
+        .catch((err) => {
+          console.log("Error", err)
+        })
+    }
   }
 
   return (
@@ -54,7 +105,17 @@ const Accounts = () => {
           >
             + Add New
           </button>
-          {modal ? <Modal data={NewData} type="addnew" from="Account" /> : ""}
+          {modal ? (
+            <Modal
+              data={NewData}
+              type="addnew"
+              from="Account"
+              changeVal={changeVal}
+              handleSave={handleSave}
+            />
+          ) : (
+            ""
+          )}
         </div>
         <div className="members">
           <table id="members" className="table">
@@ -71,7 +132,7 @@ const Accounts = () => {
 
             <tbody>
               {tdata.map((t) => (
-                <TableData key={t.TransId} mem={t} />
+                <TableData key={t.TransId} mem={t} updateTdata={updateTdata} />
               ))}
             </tbody>
           </table>
@@ -81,58 +142,76 @@ const Accounts = () => {
   )
 }
 
-class TableData extends Component {
-  state = {
-    data: {
-      TransId: this.props.mem.id,
-      DateTime: this.props.mem.date_time,
-      Mode: this.props.mem.mode,
-      Amount: this.props.mem.amount,
-      Remark: this.props.mem.remark,
-    },
-    modal: { Delete: false },
+const TableData = ({ mem, updateTdata }) => {
+  let [d, setData] = useState(mem)
+  const [modal, setModal] = useState({ Delete: false })
+
+  const handleDeletemodal = () => {
+    console.log("From Delete: ", d)
+    setModal({ Delete: true })
   }
 
-  handleDelete = () => {
-    console.log("From Delete: ", this.state)
-    this.setState({ modal: { Delete: true } })
+  const handleEdit = () => {}
+  const changeVal = () => {}
+  const handleSave = () => {}
+  const handleDelete = (f, t) => {
+    if (f === "Account" && t === "delete") {
+      console.log("ID:", d)
+      Axios.delete(links.home + links.accounts, {
+        params: { id: d.id },
+        headers: {
+          Authorization: `token ${links.token}`,
+        },
+      })
+        .then(() => {
+          console.log("Success")
+          setModal({ Edit: false, Delete: false })
+          updateTdata(d.id)
+        })
+        .catch((err) => {
+          console.log("Error", err)
+        })
+    }
   }
-
-  render() {
-    return (
-      <>
-        <tr>
-          <td>{this.state.data.TransId}</td>
-          <td>
-            {this.state.data.DateTime.split("T")[0]}{" "}
-            {this.state.data.DateTime.split("T")[1].slice(0, 8)}
-          </td>
-          <td>{this.state.data.Mode ? "Credit" : "Debit"}</td>
-          <td>{this.state.data.Amount}</td>
-          <td>{this.state.data.Remark}</td>
-          <td>
-            <button
-              type="button"
-              class="btn btn-outline-danger btn-sm"
-              data-toggle="modal"
-              data-target="#Account_Delete"
-              style={{ marginLeft: "5px" }}
-              onClick={() => {
-                this.handleDelete()
-              }}
-            >
-              Delete
-            </button>
-          </td>
-        </tr>
-        {this.state.modal.Delete ? (
-          <Modal data={this.state.data} type="delete" from="Account" />
-        ) : (
-          ""
-        )}
-      </>
-    )
-  }
+  return (
+    <>
+      <tr>
+        <td>{d.id}</td>
+        <td>
+          {d.date_time.split("T")[0]} {d.date_time.split("T")[1].slice(0, 8)}
+        </td>
+        <td>{d.mode ? "Credit" : "Debit"}</td>
+        <td>{d.amount}</td>
+        <td>{d.remark}</td>
+        <td>
+          <button
+            type="button"
+            class="btn btn-outline-danger btn-sm"
+            data-toggle="modal"
+            data-target="#Account_Delete"
+            style={{ marginLeft: "5px" }}
+            onClick={() => {
+              handleDeletemodal()
+            }}
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      {modal.Delete ? (
+        <Modal
+          data={d}
+          type="delete"
+          from="Account"
+          changeVal={changeVal}
+          handleSave={handleSave}
+          handleDelete={handleDelete}
+        />
+      ) : (
+        ""
+      )}
+    </>
+  )
 }
 
 export default Accounts

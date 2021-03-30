@@ -1,102 +1,7 @@
 import React, { useState } from "react"
-import Axios from "axios"
-import links from "../../links.json"
 
-const Modal = ({ data, type, from }) => {
+const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
   let [d, setData] = useState(data)
-
-  const changeVal = (e, id, t, f) => {
-    let val = e.target.value
-    if (t === "addnew" && f === "members") {
-      switch (id) {
-        case "Name":
-          setData({ ...d, owner: val })
-          break
-        case "Flat":
-          setData({ ...d, flat: val })
-          break
-        case "Contact":
-          setData({ ...d, contact: val })
-          break
-        case "Parking":
-          setData({ ...d, parking: val })
-          break
-        case "sel1":
-          setData({ ...d, status: val })
-          break
-        default:
-          break
-      }
-    } else if (t === "edit" && f === "members") {
-      switch (id) {
-        case "Name":
-          setData({ ...d, own: val })
-          break
-        case "Flat":
-          setData({ ...d, flat: val })
-          break
-        case "Contact":
-          setData({ ...d, cont: val })
-          break
-        case "Parking":
-          setData({ ...d, park: val })
-          break
-        case "sel1":
-          setData({ ...d, stat: val })
-          break
-        default:
-          break
-      }
-    } else if (t === "edit" && f === "Services") {
-      switch (id) {
-        case "Name":
-          setData({ ...d, name: val })
-          break
-        case "Desig":
-          setData({ ...d, desig: val })
-          break
-        case "Contact":
-          setData({ ...d, contact: val })
-          break
-        default:
-          break
-      }
-    } else if (t === "addnew" && f === "Account") {
-      switch (id) {
-        case "Transaction":
-          setData({ ...d, TransId: val })
-          break
-        case "DateTime":
-          setData({ ...d, DateTime: val })
-          break
-        case "sel1":
-          setData({ ...d, Mode: val })
-          break
-        case "Amount":
-          setData({ ...d, Amount: val })
-          break
-        case "Remark":
-          setData({ ...d, Remark: val })
-          break
-        default:
-          break
-      }
-    } else if (t === "addnew" && f === "Services") {
-      switch (id) {
-        case "Name":
-          setData({ ...d, name: val })
-          break
-        case "Desig":
-          setData({ ...d, desig: val })
-          break
-        case "Contact":
-          setData({ ...d, contact: val })
-          break
-        default:
-          break
-      }
-    }
-  }
 
   const handleClose = (f) => {
     if (f === "members") {
@@ -112,21 +17,6 @@ const Modal = ({ data, type, from }) => {
       setData({ name: "", contact: "", designation: "" })
     } else if (f === "Account") {
       setData({ TransId: "", DateTime: "", Mode: "", Amount: "", Remark: "" })
-    }
-  }
-
-  const handleSave = (f, t) => {
-    if (f === "Services" && t === "edit") {
-      console.log(d)
-      Axios.post(links.home + links.services, d, {
-        headers: {
-          Authorization: `token ${links.token}`,
-        },
-      })
-        .then((res) => {
-          console.log("Success")
-        })
-        .catch((err) => console.log("Error", err))
     }
   }
 
@@ -172,6 +62,18 @@ const Modal = ({ data, type, from }) => {
                         onChange={(e) => {
                           changeVal(e, "Name", type, from)
                         }}
+                      />
+                    </div>
+                    <div class="col">
+                      <label for="Wing" class="form-label">
+                        Wing
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        type="Wing"
+                        placeholder={d.wing}
+                        onChange={(e) => changeVal(e, "Wing", type, from)}
                       />
                     </div>
                     <div class="col">
@@ -237,9 +139,8 @@ const Modal = ({ data, type, from }) => {
                   <button
                     type="button"
                     class="btn btn-primary"
-                    onClick={() => {
-                      console.log("Modal Submit Clicked")
-                    }}
+                    data-dismiss="modal"
+                    onClick={() => handleSave(from, type)}
                   >
                     Save changes
                   </button>
@@ -274,32 +175,6 @@ const Modal = ({ data, type, from }) => {
                 </div>
                 <div class="modal-body">
                   <div class="row">
-                    <div class="col">
-                      <label for="Transaction" class="form-label">
-                        Transaction Id
-                      </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="Transaction"
-                        onChange={(e) => {
-                          changeVal(e, "Transaction", type, from)
-                        }}
-                      />
-                    </div>
-                    <div class="col">
-                      <label for="DateTime" class="form-label">
-                        Date Time
-                      </label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="DateTime"
-                        onChange={(e) => {
-                          changeVal(e, "DateTime", type, from)
-                        }}
-                      />
-                    </div>
                     <div className="col">
                       <label for="Mode" class="form-label">
                         Mode
@@ -349,8 +224,9 @@ const Modal = ({ data, type, from }) => {
                   <button
                     type="button"
                     class="btn btn-primary"
+                    data-dismiss="modal"
                     onClick={() => {
-                      console.log("Modal Submit Clicked")
+                      handleSave(from, type)
                     }}
                   >
                     Save changes
@@ -410,7 +286,7 @@ const Modal = ({ data, type, from }) => {
                         type="text"
                         class="form-control"
                         id="Designation"
-                        placeholder={d.desig}
+                        placeholder={d.designation}
                         onChange={(e) => {
                           changeVal(e, "Desig", type, from)
                         }}
@@ -433,7 +309,12 @@ const Modal = ({ data, type, from }) => {
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-primary">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    data-dismiss="modal"
+                    onClick={() => handleSave(from, type)}
+                  >
                     Save changes
                   </button>
                 </div>
@@ -458,7 +339,7 @@ const Modal = ({ data, type, from }) => {
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
-                    Edit data for {d.own}
+                    Edit data for {d.owner}
                   </h5>
                   <button
                     type="button"
@@ -480,9 +361,23 @@ const Modal = ({ data, type, from }) => {
                         type="text"
                         class="form-control"
                         id="Name"
-                        placeholder={d.own}
+                        placeholder={d.owner}
                         onChange={(e) => {
                           changeVal(e, "Name", type, from)
+                        }}
+                      />
+                    </div>
+                    <div class="col">
+                      <label for="Wing" class="form-label">
+                        Wing
+                      </label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Wing"
+                        placeholder={d.wing}
+                        onChange={(e) => {
+                          changeVal(e, "Flat", type, from)
                         }}
                       />
                     </div>
@@ -494,12 +389,14 @@ const Modal = ({ data, type, from }) => {
                         type="text"
                         class="form-control"
                         id="Flat"
-                        placeholder={d.flat}
+                        placeholder={d.flat_no}
                         onChange={(e) => {
                           changeVal(e, "Flat", type, from)
                         }}
                       />
                     </div>
+                  </div>
+                  <div className="row">
                     <div class="col">
                       <label for="Contact" class="form-label">
                         Contact
@@ -508,14 +405,12 @@ const Modal = ({ data, type, from }) => {
                         type="text"
                         class="form-control"
                         id="Contact"
-                        placeholder={d.cont}
+                        placeholder={d.contact}
                         onChange={(e) => {
                           changeVal(e, "Contact", type, from)
                         }}
                       />
                     </div>
-                  </div>
-                  <div className="row">
                     <div className="col">
                       <label for="Parking" class="form-label">
                         Parking
@@ -524,7 +419,7 @@ const Modal = ({ data, type, from }) => {
                         type="text"
                         class="form-control"
                         id="Parking"
-                        placeholder={d.park}
+                        placeholder={d.parking}
                         onChange={(e) => {
                           changeVal(e, "Parking", type, from)
                         }}
@@ -534,7 +429,13 @@ const Modal = ({ data, type, from }) => {
                       <label for="Status" class="form-label">
                         Status
                       </label>
-                      <select class="form-control" id="sel1">
+                      <select
+                        class="form-control"
+                        id="sel1"
+                        onChange={(e) => {
+                          changeVal(e, "sel1", type, from)
+                        }}
+                      >
                         <option>Rented</option>
                         <option>Self</option>
                       </select>
@@ -545,8 +446,9 @@ const Modal = ({ data, type, from }) => {
                   <button
                     type="button"
                     class="btn btn-primary"
+                    data-dismiss="modal"
                     onClick={() => {
-                      console.log("Modal Submit Clicked")
+                      handleSave(from, type)
                     }}
                   >
                     Save changes
@@ -568,7 +470,7 @@ const Modal = ({ data, type, from }) => {
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
-                    Delete data for {d.own}
+                    Delete data for {d.owner}
                   </h5>
                   <button
                     type="button"
@@ -587,8 +489,9 @@ const Modal = ({ data, type, from }) => {
                   <button
                     type="button"
                     class="btn btn-primary"
+                    data-dismiss="modal"
                     onClick={() => {
-                      console.log("Modal Submit Clicked")
+                      handleDelete(from, type)
                     }}
                   >
                     Save changes
@@ -649,7 +552,7 @@ const Modal = ({ data, type, from }) => {
                       type="text"
                       class="form-control"
                       id="Designation"
-                      placeholder={d.desig}
+                      placeholder={d.designation}
                       onChange={(e) => {
                         changeVal(e, "Desig", type, from)
                       }}
@@ -682,6 +585,7 @@ const Modal = ({ data, type, from }) => {
                 <button
                   type="button"
                   class="btn btn-primary"
+                  data-dismiss="modal"
                   onClick={() => handleSave(from, type)}
                 >
                   Save changes
@@ -729,8 +633,9 @@ const Modal = ({ data, type, from }) => {
                 <button
                   type="button"
                   class="btn btn-primary"
+                  data-dismiss="modal"
                   onClick={() => {
-                    console.log("Modal Submit Clicked")
+                    handleDelete(from, type)
                   }}
                 >
                   Save changes
@@ -754,7 +659,7 @@ const Modal = ({ data, type, from }) => {
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">
-                    Delete data for TransactionID: {d.TransId}
+                    Delete data for TransactionID: {d.id}
                   </h5>
                   <button
                     type="button"
@@ -773,8 +678,9 @@ const Modal = ({ data, type, from }) => {
                   <button
                     type="button"
                     class="btn btn-primary"
+                    data-dismiss="modal"
                     onClick={() => {
-                      console.log("Modal Submit Clicked")
+                      handleDelete(from, type)
                     }}
                   >
                     Save changes
