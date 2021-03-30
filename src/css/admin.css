@@ -4,11 +4,11 @@
 }
 
 .sidebar {
-  background-color: aqua;
+  /* background-color: aqua;
   padding: 0.5rem;
-  grid-area: side;
-  height: 100vh;
-  width: 12vw;
+  grid-area: side; */
+  height: 93vh;
+  /* width: 12vw; */
 }
 
 .main-content {

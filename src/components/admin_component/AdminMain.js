@@ -3,10 +3,17 @@ import React from "react"
 const AdminMain = () => {
   return (
     <>
-      <div className="row">
-        <Boxcontainer text="No. of Members" value="150" type="member" />
-        <Boxcontainer text="Fund Balance" value="Rs. 9,00,000" type="money" />
-        <Boxcontainer text="No. of Committee Members" value="5" type="member" />
+      <div className="contnainer">
+        <div className="h1 p-4">Admin</div>
+        <div className="row">
+          <Boxcontainer text="No. of Members" value="150" type="member" />
+          <Boxcontainer text="Fund Balance" value="Rs. 9,00,000" type="money" />
+          <Boxcontainer
+            text="No. of Committee Members"
+            value="5"
+            type="member"
+          />
+        </div>
       </div>
       {/* <div className="row">
         <div className="col-md-6">

@@ -29,7 +29,7 @@ const Services = () => {
   return (
     <>
       <div className="container">
-        <div className="h1 p-4">Service Page</div>
+        <div className="h1 p-4">Service</div>
         <div className="row col-md-1 offset-md-10">
           <button
             className="m-2 btn btn-primary"

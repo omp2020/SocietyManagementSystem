@@ -1,8 +1,24 @@
-import React, { useState, Component } from "react"
+import React, { useState, Component, useEffect } from "react"
 import "../../css/members.css"
 import Modal from "./Modal"
+import Axios from "axios"
+import links from "../../links.json"
 
 const Members = () => {
+  useEffect(() => {
+    Axios.get(links.home + links.members, { params: { society_id: 1 } })
+      .then((res) => console.log(res))
+      .catch((err) => console.log("Error", err))
+    // Axios({
+    //   method: "get",
+    //   headers: { "Content-Type": "application/json" },
+    //   url: links.home + links.members,
+    // })
+    //   .then(function (response) {
+    //     console.log(response)
+    //   })
+    //   .catch((err) => console.log(err))
+  }, [])
   const [tdata, setTdata] = useState([
     {
       memberID: "1122",
@@ -40,7 +56,7 @@ const Members = () => {
   return (
     <>
       <div className="container">
-        <div className="h1 p-4">Members Page</div>
+        <div className="h1 p-4">Members</div>
         <div className="row col-md-1 offset-md-10">
           <button
             className="m-2 btn btn-primary"
