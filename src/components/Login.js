@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from "react"
-import axios from "axios"
-import Logo from "../img/Logo.png"
+import React, { useState } from "react"
 import "../css/login.css"
 import Field from "./Field"
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  Switch,
-} from "react-router-dom"
+import { Redirect } from "react-router-dom"
+import firebase from "firebase"
 
 const Login = () => {
   const [loginData, setLD] = useState({ username: "", password: "" })
+  const [error, setError] = useState()
 
   const changeVal = (e, field) => {
     let val = e.target.value
-    console.log(field, val)
     switch (field) {
       case "username":
         setLD({ ...loginData, username: val })
@@ -31,36 +24,49 @@ const Login = () => {
 
   const [isLogin, setLogin] = useState(false)
 
-  const [doLogin, setDologin] = useState()
-  useEffect(() => {
-    // Update the document title using the browser API
-    setDologin(false)
-  })
-
   const makeLogin = () => {
-    console.log("Login Clicked")
-    console.log(loginData)
-    if (loginData.username === "Om" && loginData.password === "Test123") {
-      setDologin(true)
-      setLogin(true)
-    }
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(loginData.username, loginData.password)
+      .then((userCredential) => {
+        sessionStorage.setItem("isLogin", true)
+        setLogin(true)
+        sessionStorage.setItem("society_id", userCredential.user.uid)
+      })
+      .catch((error) => {
+        var errorCode = error.code
+        errorCode === "auth/user-not-found" ? setError(true) : setError(false)
+        var errorMessage = error.message
+        console.log(errorCode, errorMessage)
+      })
   }
 
   return (
     <>
-      <div className="container mt-5">
-        <div className="row">
+      <div className="container mt-5 h-100">
+        <div className="row align-self-center h-100">
           <div className="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
-            <div className="card card-primary">
-              <div className="login-brand offset-sm-5">
-                <img
-                  src={Logo}
-                  alt="Logo"
-                  style={{
-                    marginTop: "3px",
-                    width: "50px",
-                  }}
-                />
+            {error ? (
+              <div
+                class="alert alert-warning alert-dismissible fade show align-content-center"
+                role="alert"
+              >
+                <strong>User not Found</strong>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            ) : (
+              ""
+            )}
+            <div className="card h-100 card-primary justify-content-center">
+              <div className="login-brand align-self-center p-3">
+                <b className="h4">Society Management System</b>
               </div>
               <div className="card-body">
                 <div className="card-header">

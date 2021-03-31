@@ -1,6 +1,10 @@
 import React from "react"
+import links from "../../links.json"
 
 const AdminMain = () => {
+  const iL = sessionStorage.getItem("isLogin") ?? false
+  iL || (window.location.href = links.login)
+
   return (
     <>
       <div className="contnainer">

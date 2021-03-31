@@ -52,13 +52,13 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                   <div class="row">
                     <div class="col">
                       <label for="Name" class="form-label">
-                        Name
+                        Owner
                       </label>
                       <input
                         type="text"
                         class="form-control"
-                        type="Name"
                         placeholder={d.owner}
+                        maxLength="50"
                         onChange={(e) => {
                           changeVal(e, "Name", type, from)
                         }}
@@ -71,7 +71,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                       <input
                         type="text"
                         class="form-control"
-                        type="Wing"
+                        maxLength="3"
                         placeholder={d.wing}
                         onChange={(e) => changeVal(e, "Wing", type, from)}
                       />
@@ -83,7 +83,6 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                       <input
                         type="text"
                         class="form-control"
-                        type="Flat"
                         placeholder={d.flat}
                         onChange={(e) => changeVal(e, "Flat", type, from)}
                       />
@@ -95,8 +94,8 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                       <input
                         type="text"
                         class="form-control"
-                        type="Contact"
                         placeholder={d.contact}
+                        maxLength="13"
                         onChange={(e) => {
                           changeVal(e, "Contact", type, from)
                         }}
@@ -111,8 +110,8 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                       <input
                         type="text"
                         class="form-control"
-                        type="Parking"
                         placeholder={d.parking}
+                        maxLength="10"
                         onChange={(e) => {
                           changeVal(e, "Parking", type, from)
                         }}
@@ -213,6 +212,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                         type="text"
                         class="form-control"
                         id="Remark"
+                        maxLength="150"
                         onChange={(e) => {
                           changeVal(e, "Remark", type, from)
                         }}
@@ -269,6 +269,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                       <input
                         type="text"
                         class="form-control"
+                        maxlength="100"
                         id="Name"
                         placeholder={d.name}
                         onChange={(e) => {
@@ -286,6 +287,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                         type="text"
                         class="form-control"
                         id="Designation"
+                        maxlength="30"
                         placeholder={d.designation}
                         onChange={(e) => {
                           changeVal(e, "Desig", type, from)
@@ -300,6 +302,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                         type="text"
                         class="form-control"
                         id="Contact"
+                        maxlength="13"
                         placeholder={d.contact}
                         onChange={(e) => {
                           changeVal(e, "Contact", type, from)
@@ -355,12 +358,13 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                   <div class="row">
                     <div class="col">
                       <label for="Name" class="form-label">
-                        Name
+                        Owner
                       </label>
                       <input
                         type="text"
                         class="form-control"
                         id="Name"
+                        maxlength="50"
                         placeholder={d.owner}
                         onChange={(e) => {
                           changeVal(e, "Name", type, from)
@@ -375,6 +379,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                         type="text"
                         class="form-control"
                         id="Wing"
+                        maxlength="3"
                         placeholder={d.wing}
                         onChange={(e) => {
                           changeVal(e, "Flat", type, from)
@@ -405,6 +410,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                         type="text"
                         class="form-control"
                         id="Contact"
+                        maxlength="13"
                         placeholder={d.contact}
                         onChange={(e) => {
                           changeVal(e, "Contact", type, from)
@@ -419,6 +425,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                         type="text"
                         class="form-control"
                         id="Parking"
+                        maxlength="10"
                         placeholder={d.parking}
                         onChange={(e) => {
                           changeVal(e, "Parking", type, from)
@@ -536,6 +543,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                       type="text"
                       class="form-control"
                       id="Name"
+                      maxlength="100"
                       placeholder={d.name}
                       onChange={(e) => {
                         changeVal(e, "Name", type, from)
@@ -552,6 +560,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                       type="text"
                       class="form-control"
                       id="Designation"
+                      maxlength="30"
                       placeholder={d.designation}
                       onChange={(e) => {
                         changeVal(e, "Desig", type, from)
@@ -566,6 +575,7 @@ const Modal = ({ data, type, from, changeVal, handleSave, handleDelete }) => {
                       type="text"
                       class="form-control"
                       id="Contact"
+                      maxlength="13"
                       placeholder={d.contact}
                       onChange={(e) => {
                         changeVal(e, "Contact", type, from)

@@ -3,5 +3,6 @@
   "members": "members/",
   "accounts": "accounts/",
   "services": "services/",
-  "token": "eb0e24c5aec99ab43a5cee89c494d21908aea1dc"
+  "token": "eb0e24c5aec99ab43a5cee89c494d21908aea1dc",
+  "login": "/"
 }

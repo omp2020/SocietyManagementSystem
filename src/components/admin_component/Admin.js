@@ -1,14 +1,7 @@
-import React, { useState } from "react"
-import axios from "axios"
+import React from "react"
 import Sidebar from "./Sidebar"
 import "../../css/admin.css"
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  Switch,
-} from "react-router-dom"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
 import AdminMain from "./AdminMain"
 import Members from "./Members"
 import Services from "./Services"
@@ -19,7 +12,7 @@ const Admin = () => {
   return (
     <>
       <Navbar />
-      <div className="container-fluid">
+      <div className="container-fluid" style={{ backgroundColor: "white" }}>
         <Router>
           <div className="row">
             <Sidebar />

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Link, Redirect } from "react-router-dom"
+import { Redirect } from "react-router-dom"
 
 const Navbar = () => {
   const [isLogout, setLogout] = useState(false)
@@ -12,6 +12,17 @@ const Navbar = () => {
   return (
     <>
       <nav class="navbar navbar-dark sticky-top bg-primary flex-md-nowrap p-0">
+        <button
+          class="btn btn-primary sidebar-toggler collapsed"
+          type="button"
+          data-toggle="offcanvas"
+          data-target="#navbarsExampleDefault"
+          aria-controls="navbarsExampleDefault"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          Menu
+        </button>
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/admin">
           Society Management System
         </a>

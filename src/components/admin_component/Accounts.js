@@ -1,15 +1,18 @@
-import React, { useState, useEffect, Component } from "react"
+import React, { useState, useEffect } from "react"
 import Modal from "./Modal"
 import Axios from "axios"
 import links from "../../links.json"
 import ReactLoading from "react-loading"
 
 const Accounts = () => {
+  const iL = sessionStorage.getItem("isLogin") ?? false
+  iL || (window.location.href = links.login)
+
   const [tdata, setTdata] = useState([])
   const [loader, setLoader] = useState(true)
   useEffect(() => {
     Axios.get(links.home + links.accounts, {
-      params: { society_id: 1 },
+      params: { society_id: sessionStorage.getItem("society_id") },
       headers: {
         Authorization: `token ${links.token}`,
       },
@@ -22,7 +25,7 @@ const Accounts = () => {
   }, [])
   const [modal, setModal] = useState(false)
   const [NewData, setNewData] = useState({
-    society_id: 1,
+    society_id: sessionStorage.getItem("society_id"),
     mode: "",
     amount: "",
     remark: "",
@@ -68,7 +71,7 @@ const Accounts = () => {
         .then(() => {
           console.log("Success")
           Axios.get(links.home + links.accounts, {
-            params: { society_id: 1 },
+            params: { society_id: sessionStorage.getItem("society_id") },
             headers: {
               Authorization: `token ${links.token}`,
             },
@@ -143,7 +146,7 @@ const Accounts = () => {
 }
 
 const TableData = ({ mem, updateTdata }) => {
-  let [d, setData] = useState(mem)
+  let [d] = useState(mem)
   const [modal, setModal] = useState({ Delete: false })
 
   const handleDeletemodal = () => {
@@ -151,7 +154,6 @@ const TableData = ({ mem, updateTdata }) => {
     setModal({ Delete: true })
   }
 
-  const handleEdit = () => {}
   const changeVal = () => {}
   const handleSave = () => {}
   const handleDelete = (f, t) => {

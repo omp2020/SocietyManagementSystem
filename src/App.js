@@ -1,16 +1,15 @@
 import "./App.css"
 import Login from "./components/Login"
 import Admin from "./components/admin_component/Admin"
-import Members from "./components/admin_component/Members"
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  Switch,
-} from "react-router-dom"
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import config from "./config"
+import Firebase from "firebase"
 
 function App() {
+  if (!Firebase.apps.length) {
+    Firebase.initializeApp({ ...config })
+  }
+
   return (
     <>
       <Router>

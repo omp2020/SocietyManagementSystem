@@ -1,4 +1,4 @@
-import React, { useState, Component, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import "../../css/members.css"
 import Modal from "./Modal"
 import Axios from "axios"
@@ -6,10 +6,13 @@ import links from "../../links.json"
 import ReactLoading from "react-loading"
 
 const Members = () => {
+  const iL = sessionStorage.getItem("isLogin") ?? false
+  iL || (window.location.href = links.login)
+
   const [loader, setLoader] = useState(true)
   useEffect(() => {
     Axios.get(links.home + links.members, {
-      params: { society_id: 1 },
+      params: { society_id: sessionStorage.getItem("society_id") },
       headers: {
         Authorization: `token ${links.token}`,
       },
@@ -17,7 +20,6 @@ const Members = () => {
       .then((res) => {
         setTdata(res.data)
         setLoader(false)
-        localStorage.setItem("society_id", 1)
       })
       .catch((err) => console.log("Error", err))
   }, [])
@@ -25,7 +27,7 @@ const Members = () => {
 
   const [modal, setModal] = useState(false)
   const [NewData, setNewData] = useState({
-    society_id: 1,
+    society_id: sessionStorage.getItem("society_id"),
     wing: "",
     flat_no: "",
     owner: "",
@@ -63,6 +65,7 @@ const Members = () => {
           break
         case "Wing":
           setNewData({ ...NewData, wing: val })
+          break
         default:
           break
       }
@@ -80,7 +83,7 @@ const Members = () => {
         .then(() => {
           console.log("Success")
           Axios.get(links.home + links.members, {
-            params: { society_id: 1 },
+            params: { society_id: sessionStorage.getItem("society_id") },
             headers: {
               Authorization: `token ${links.token}`,
             },
@@ -197,6 +200,7 @@ const TableData = ({ mem, updateTdata }) => {
           break
         case "Wing":
           setData({ ...d, wing: val })
+          break
         default:
           break
       }

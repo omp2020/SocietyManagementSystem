@@ -1,15 +1,18 @@
-import React, { useState, useEffect, Component } from "react"
+import React, { useState, useEffect } from "react"
 import Modal from "./Modal"
 import Axios from "axios"
 import links from "../../links.json"
 import ReactLoading from "react-loading"
 
 const Services = () => {
+  const iL = sessionStorage.getItem("isLogin") ?? false
+  iL || (window.location.href = links.login)
+
   const [loader, setLoader] = useState(true)
   const [tdata, setTdata] = useState([])
   useEffect(() => {
     Axios.get(links.home + links.services, {
-      params: { society_id: 1 },
+      params: { society_id: sessionStorage.getItem("society_id") },
       headers: {
         Authorization: `token ${links.token}`,
       },
@@ -24,7 +27,7 @@ const Services = () => {
 
   const [modal, setModal] = useState(false)
   const [NewData, setNewData] = useState({
-    society_id: 1,
+    society_id: sessionStorage.getItem("society_id"),
     name: "",
     contact: "",
     designation: "",
@@ -69,7 +72,7 @@ const Services = () => {
         .then(() => {
           console.log("Success")
           Axios.get(links.home + links.services, {
-            params: { society_id: 1 },
+            params: { society_id: sessionStorage.getItem("society_id") },
             headers: {
               Authorization: `token ${links.token}`,
             },

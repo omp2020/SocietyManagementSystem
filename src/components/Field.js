@@ -9,7 +9,6 @@ const Field = ({ legend, itype, type, value, onChange, name }) => {
           type={itype ?? ""}
           class="form-control"
           value={value}
-          id="exampleFormControlInput1"
           onChange={(e) => onChange(e, type, name)}
         />
       </div>

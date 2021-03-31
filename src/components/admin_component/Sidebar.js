@@ -1,17 +1,14 @@
 import React from "react"
 import Logo from "../../img/Logo.png"
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect,
-  Switch,
-} from "react-router-dom"
+import { Link } from "react-router-dom"
 
 const Sidebar = () => {
   return (
     <>
-      <nav className="col-md-2 d-none d-md-block bg-light sidebar">
+      <nav
+        className="col-md-2 d-none d-md-block bg-light sidebar offcanvas-collapse"
+        id="navbarsExampleDefault"
+      >
         <div className="sidebar-sticky">
           <img src={Logo} alt="Logo" style={{ width: "50px" }} />
           <ul className="nav flex-column">
