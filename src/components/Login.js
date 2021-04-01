@@ -24,6 +24,7 @@ const Login = () => {
         break
       case "cpass":
         setLD({ ...loginData, cpassword: val })
+        break
       default:
         break
     }
@@ -45,6 +46,12 @@ const Login = () => {
         var errorCode = error.code
         errorCode === "auth/user-not-found"
           ? setError({ status: true, value: "User Not Found" })
+          : setError({ status: false, value: "" })
+        errorCode === "auth/invalid-email"
+          ? setError({
+              status: true,
+              value: "The Emai Id is badly formatted",
+            })
           : setError({ status: false, value: "" })
         var errorMessage = error.message
         console.log(errorCode, errorMessage)
@@ -120,18 +127,20 @@ const Login = () => {
               {signup ? (
                 <div className="card-body">
                   <div className="card-header">
-                    <a
+                    <button
+                      href=""
                       className="btn btn-outline-info"
                       onClick={() => setSignup(false)}
                     >
                       <span>Login</span>
-                    </a>
-                    <a
+                    </button>
+                    <button
+                      href=""
                       className="btn btn-outline-info offset-sm-5"
                       onClick={() => setSignup(true)}
                     >
                       <span>Sign Up</span>
-                    </a>
+                    </button>
                   </div>
                   <div className="form-group">
                     <Field
@@ -167,18 +176,18 @@ const Login = () => {
               ) : (
                 <div className="card-body">
                   <div className="card-header">
-                    <a
+                    <button
                       className="btn btn-outline-info"
                       onClick={() => setSignup(false)}
                     >
                       <span>Login</span>
-                    </a>
-                    <a
+                    </button>
+                    <button
                       className="btn btn-outline-info offset-sm-5"
                       onClick={() => setSignup(true)}
                     >
                       <span>Sign Up</span>
-                    </a>
+                    </button>
                   </div>
                   <div className="form-group">
                     <Field
