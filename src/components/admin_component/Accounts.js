@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import Modal from "./Modal"
 import Axios from "axios"
 import links from "../../links.json"
+import token from "../../token.json"
 import ReactLoading from "react-loading"
 
 const Accounts = () => {
@@ -14,7 +15,7 @@ const Accounts = () => {
     Axios.get(links.home + links.accounts, {
       params: { society_id: sessionStorage.getItem("society_id") },
       headers: {
-        Authorization: `token ${links.token}`,
+        Authorization: `token ${token.token}`,
       },
     })
       .then((res) => {
@@ -65,7 +66,7 @@ const Accounts = () => {
     if (f === "Account" && t === "addnew") {
       Axios.post(links.home + links.accounts, NewData, {
         headers: {
-          Authorization: `token ${links.token}`,
+          Authorization: `token ${token.token}`,
         },
       })
         .then(() => {
@@ -73,7 +74,7 @@ const Accounts = () => {
           Axios.get(links.home + links.accounts, {
             params: { society_id: sessionStorage.getItem("society_id") },
             headers: {
-              Authorization: `token ${links.token}`,
+              Authorization: `token ${token.token}`,
             },
           })
             .then((res) => {
@@ -162,7 +163,7 @@ const TableData = ({ mem, updateTdata }) => {
       Axios.delete(links.home + links.accounts, {
         params: { id: d.id },
         headers: {
-          Authorization: `token ${links.token}`,
+          Authorization: `token ${token.token}`,
         },
       })
         .then(() => {

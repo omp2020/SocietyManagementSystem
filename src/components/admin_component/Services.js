@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import Modal from "./Modal"
 import Axios from "axios"
 import links from "../../links.json"
+import token from "../../token.json"
 import ReactLoading from "react-loading"
 
 const Services = () => {
@@ -14,7 +15,7 @@ const Services = () => {
     Axios.get(links.home + links.services, {
       params: { society_id: sessionStorage.getItem("society_id") },
       headers: {
-        Authorization: `token ${links.token}`,
+        Authorization: `token ${token.token}`,
       },
     })
       .then((res) => {
@@ -66,7 +67,7 @@ const Services = () => {
     if (f === "Services" && t === "addnew") {
       Axios.post(links.home + links.services, NewData, {
         headers: {
-          Authorization: `token ${links.token}`,
+          Authorization: `token ${token.token}`,
         },
       })
         .then(() => {
@@ -74,7 +75,7 @@ const Services = () => {
           Axios.get(links.home + links.services, {
             params: { society_id: sessionStorage.getItem("society_id") },
             headers: {
-              Authorization: `token ${links.token}`,
+              Authorization: `token ${token.token}`,
             },
           })
             .then((res) => {
@@ -243,7 +244,7 @@ const TableData = ({ mem, updateTdata }) => {
       Axios.put(links.home + links.services, d, {
         params: { id: d.id },
         headers: {
-          Authorization: `token ${links.token}`,
+          Authorization: `token ${token.token}`,
         },
       })
         .then((res) => {
@@ -261,7 +262,7 @@ const TableData = ({ mem, updateTdata }) => {
       Axios.delete(links.home + links.services, {
         params: { id: d.id },
         headers: {
-          Authorization: `token ${links.token}`,
+          Authorization: `token ${token.token}`,
         },
       })
         .then(() => {

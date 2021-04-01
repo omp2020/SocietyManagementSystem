@@ -39,6 +39,7 @@ const Login = () => {
         sessionStorage.setItem("isLogin", true)
         setLogin(true)
         sessionStorage.setItem("society_id", userCredential.user.uid)
+        setLD({ username: "", password: "", cpassword: "" })
       })
       .catch((error) => {
         var errorCode = error.code
@@ -60,6 +61,7 @@ const Login = () => {
           var user = userCredential.user
           console.log(user.uid)
           setError({ status: true, value: "User Login Created Successfully" })
+          setLD({ username: "", password: "", cpassword: "" })
         })
         .catch((error) => {
           var errorCode = error.code
