@@ -161,7 +161,7 @@ const Login = () => {
                       legend="Confirm Password"
                       itype="password"
                       type="login"
-                      onChange={(e) => changeVal(e, "password")}
+                      onChange={(e) => changeVal(e, "cpass")}
                       name="password"
                     />
                   </div>
